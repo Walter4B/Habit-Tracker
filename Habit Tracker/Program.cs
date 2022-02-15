@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Data.SQLite;
 class HabitProgram
 {
     public static void Main()
@@ -63,19 +64,19 @@ class HabitProgram
 
     public static void ViewRecords(FileStream fs)
     {
-        testing(fs);
+        testing(fs); //tbd
     }
     public static void InsertRecord(FileStream fs) 
     {
-        testing(fs);
+        testing(fs); //tbd
     }
     public static void DeleteRecord(FileStream fs) 
     {
-        testing(fs);
+        testing(fs); //tbd
     }
     public static void UpdateRecord(FileStream fs) 
     {
-        testing(fs);
+        testing(fs); //tbd
     }
 
     public static void testing(FileStream fs)
