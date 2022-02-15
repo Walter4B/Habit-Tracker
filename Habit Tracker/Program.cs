@@ -11,7 +11,7 @@ class HabitProgram
     }
     public static void SwitchCommand(FileStream fs)
     {
-        Console.WriteLine("\nMAIN MENU\n\n" +
+        Console.WriteLine("\n       MAIN MENU       \n\n" +
             "What would you like to do?\n" +
             "Type 0 to Close Application.\n" +
             "Type 1 to View All Records.\n" +
@@ -30,7 +30,6 @@ class HabitProgram
                     Environment.Exit(1);
                     break;
                 case 1:
-
                     ViewRecords(fs);
                     break;
                 case 2:
@@ -48,7 +47,12 @@ class HabitProgram
                     break;
             }
         }
-        SwitchCommand(fs);
+        else 
+        {
+            Console.WriteLine("invalid input");
+            SwitchCommand(fs);
+        }
+       
     }
 
     public static FileStream CreateDataFile(string path)
@@ -58,20 +62,26 @@ class HabitProgram
     }
 
     public static void ViewRecords(FileStream fs)
-    { 
-
+    {
+        testing(fs);
     }
     public static void InsertRecord(FileStream fs) 
-    { 
-    
+    {
+        testing(fs);
     }
     public static void DeleteRecord(FileStream fs) 
-    { 
-    
+    {
+        testing(fs);
     }
     public static void UpdateRecord(FileStream fs) 
-    { 
-    
+    {
+        testing(fs);
+    }
+
+    public static void testing(FileStream fs)
+    {
+        Console.WriteLine("Working");
+        SwitchCommand(fs);
     }
 
 }
