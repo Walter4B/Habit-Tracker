@@ -5,9 +5,7 @@ using System.Data.SQLite;
 class HabitProgram
 {
     /*
-     * Fix ViewRecord
      * Impliment DeleteRecord
-     * Add conn.Open, conn.close?
      */
     public static void Main()
     {
@@ -101,9 +99,9 @@ class HabitProgram
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = sqlite_datareader.GetString(0);
-            Console.WriteLine(myreader);
+            Console.WriteLine($"{sqlite_datareader.GetInt32(0)} - {sqlite_datareader.GetString(1)} - {sqlite_datareader.GetInt32(2)}");
         }
+        SwitchCommand(conn);
         conn.Close();
     }
     public static void InsertRecord(SQLiteConnection conn) 
