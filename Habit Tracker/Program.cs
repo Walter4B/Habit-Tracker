@@ -6,11 +6,42 @@ class HabitProgram
 {
     public static void Main()
     {
-        string dataPath = @"D:\Projects\Habit Tracker\HabitData.sqlite";
-        FileStream fs = CreateDataFile(dataPath);
-        SwitchCommand(fs);
+        SQLiteConnection sqlite_conn;
+        sqlite_conn = CreateConnection();
+        try
+        {
+            CreateTable(sqlite_conn);
+        }
+        catch (Exception ex)
+        { }
+        SwitchCommand(sqlite_conn);
     }
-    public static void SwitchCommand(FileStream fs)
+
+    static SQLiteConnection CreateConnection()
+    {
+
+        SQLiteConnection sqlite_conn;
+        sqlite_conn = new SQLiteConnection("Data Source = database.db; Version = 3; New = True; Compress = True; ");
+        try
+        {
+            sqlite_conn.Open();
+        }
+        catch (Exception ex)
+        {
+
+        }
+        return sqlite_conn;
+    }
+
+    static void CreateTable(SQLiteConnection conn)
+    {
+        SQLiteCommand sqlite_cmd;
+        string Createsql = "CREATE TABLE HabitTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, NumOfPushups INT NOT NULL)";
+         sqlite_cmd = conn.CreateCommand();
+        sqlite_cmd.CommandText = Createsql;
+        sqlite_cmd.ExecuteNonQuery();
+    }
+    public static void SwitchCommand(SQLiteConnection conn)
     {
         Console.WriteLine("\n       MAIN MENU       \n\n" +
             "What would you like to do?\n" +
@@ -31,59 +62,70 @@ class HabitProgram
                     Environment.Exit(1);
                     break;
                 case 1:
-                    ViewRecords(fs);
+                    ViewRecords(conn);
                     break;
                 case 2:
-                    InsertRecord(fs);
+                    InsertRecord(conn);
                     break;
                 case 3:
-                    DeleteRecord(fs);
+                    DeleteRecord(conn);
                     break;
                 case 4:
-                    UpdateRecord(fs);
+                    UpdateRecord(conn);
                     break;
                 default:
                     Console.WriteLine("Invalid input");
-                    SwitchCommand(fs);
+                    SwitchCommand(conn);
                     break;
             }
         }
         else 
         {
             Console.WriteLine("invalid input");
-            SwitchCommand(fs);
+            SwitchCommand(conn);
         }
        
     }
 
-    public static FileStream CreateDataFile(string path)
+    static void ViewRecords(SQLiteConnection conn)
     {
-        FileStream fs = File.Open(path, FileMode.OpenOrCreate);
-        return fs;
-    }
+        SQLiteDataReader sqlite_datareader;
+        SQLiteCommand sqlite_cmd;
+        sqlite_cmd = conn.CreateCommand();
+        sqlite_cmd.CommandText = "SELECT * FROM HabitTable";
 
-    public static void ViewRecords(FileStream fs)
-    {
-        testing(fs); //tbd
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
+        while (sqlite_datareader.Read())
+        {
+            string myreader = sqlite_datareader.GetString(0);
+            Console.WriteLine(myreader);
+        }
+        conn.Close();
     }
-    public static void InsertRecord(FileStream fs) 
+    public static void InsertRecord(SQLiteConnection conn) 
     {
-        testing(fs); //tbd
+        string[] querryText = { "Inserd date", "Insert number of pushups" };
+        string[] userInput = {"",""};
+        for (int i = 0; i < 2; i++)
+        {
+            Console.WriteLine(querryText[i]);
+            userInput[i] = Console.ReadLine();
+        }
+        SQLiteCommand sqlite_cmd;
+        sqlite_cmd = conn.CreateCommand();
+        sqlite_cmd.CommandText = "INSERT INTO HabitTable (Date, NumOfPushups) VALUES('" + userInput[0]+"','"+userInput[1]+"'); ";
+        sqlite_cmd.ExecuteNonQuery();
+        SwitchCommand(conn);
     }
-    public static void DeleteRecord(FileStream fs) 
+    public static void DeleteRecord(SQLiteConnection conn) 
     {
-        testing(fs); //tbd
+        //Clear by ID
+        SwitchCommand(conn);
     }
-    public static void UpdateRecord(FileStream fs) 
+    public static void UpdateRecord(SQLiteConnection conn) 
     {
-        testing(fs); //tbd
+        //Update by ID
+        SwitchCommand(conn);
     }
-
-    public static void testing(FileStream fs)
-    {
-        Console.WriteLine("Working");
-        SwitchCommand(fs);
-    }
-
 }
 
