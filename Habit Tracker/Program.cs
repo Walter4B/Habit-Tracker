@@ -5,6 +5,7 @@ using System.Data.SQLite;
 class HabitProgram
 {
     /*
+     * Impliment InputCheck
      * Impliment DeleteRecord
      */
     public static void Main()
@@ -84,7 +85,7 @@ class HabitProgram
         }
         else 
         {
-            Console.WriteLine("invalid input");
+            Console.WriteLine("Invalid input");
             SwitchCommand(conn);
         }
     }
@@ -121,6 +122,7 @@ class HabitProgram
     }
     public static void DeleteRecord(SQLiteConnection conn) 
     {
+        Console.WriteLine("Which entry would you like to remove?");
         int idNum = Convert.ToInt32(Console.ReadLine());
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
@@ -130,7 +132,8 @@ class HabitProgram
     }
     public static void UpdateRecord(SQLiteConnection conn) 
     {
-        /*int idNum =Convert.ToInt32(Console.ReadLine());
+        /*Console.WriteLine("Which entry would you like to update?");
+        int idNum =Convert.ToInt32(Console.ReadLine());
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "";
