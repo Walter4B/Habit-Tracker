@@ -4,6 +4,11 @@ using System.Text;
 using System.Data.SQLite;
 class HabitProgram
 {
+    /*
+     * Fix ViewRecord
+     * Impliment DeleteRecord
+     * Add conn.Open, conn.close?
+     */
     public static void Main()
     {
         SQLiteConnection sqlite_conn;
@@ -84,7 +89,6 @@ class HabitProgram
             Console.WriteLine("invalid input");
             SwitchCommand(conn);
         }
-       
     }
 
     static void ViewRecords(SQLiteConnection conn)
@@ -128,7 +132,11 @@ class HabitProgram
     }
     public static void UpdateRecord(SQLiteConnection conn) 
     {
-        //Update by ID
+        /*int idNum =Convert.ToInt32(Console.ReadLine());
+        SQLiteCommand sqlite_cmd;
+        sqlite_cmd = conn.CreateCommand();
+        sqlite_cmd.CommandText = "";
+        */
         SwitchCommand(conn);
     }
 }
