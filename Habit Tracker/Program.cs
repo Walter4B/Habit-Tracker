@@ -119,7 +119,11 @@ class HabitProgram
     }
     public static void DeleteRecord(SQLiteConnection conn) 
     {
-        //Clear by ID
+        int idNum = Convert.ToInt32(Console.ReadLine());
+        SQLiteCommand sqlite_cmd;
+        sqlite_cmd = conn.CreateCommand();
+        sqlite_cmd.CommandText = "DELETE FROM HabitTable WHERE ID = "+idNum+";";
+        sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
     public static void UpdateRecord(SQLiteConnection conn) 
