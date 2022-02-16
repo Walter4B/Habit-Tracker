@@ -140,7 +140,7 @@ class HabitProgram
             Console.Write("The value must be of integer type, try again: ");
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "UPDATE members SET Date ='"+userInputDate+"', NumOfPushups = '"+userInputQuantity+"' WHERE ID = '"+idNum+"'";
+        sqlite_cmd.CommandText = "UPDATE HabitTable SET Date ='"+userInputDate+"', NumOfPushups = '"+userInputQuantity+"' WHERE ID = '"+idNum+"'";
         sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
