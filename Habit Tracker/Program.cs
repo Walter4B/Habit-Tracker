@@ -4,10 +4,6 @@ using System.Text;
 using System.Data.SQLite;
 class HabitProgram
 {
-    /*
-     * Impliment InputCheck
-     * Impliment DeleteRecord
-     */
     public static void Main()
     {
         SQLiteConnection sqlite_conn;
@@ -107,16 +103,16 @@ class HabitProgram
     }
     public static void InsertRecord(SQLiteConnection conn) 
     {
-        string[] querryText = { "Inserd date", "Insert number of pushups" };
-        string[] userInput = {"",""};
-        for (int i = 0; i < 2; i++)
-        {
-            Console.WriteLine(querryText[i]);
-            userInput[i] = Console.ReadLine();
-        }
+        Console.WriteLine("Inserd date");
+        string userInputDate = Console.ReadLine();
+        Console.WriteLine("Insert number of pushups");
+        int userInputQuantity;
+        while (!int.TryParse(Console.ReadLine(), out userInputQuantity))
+            Console.Write("The value must be of integer type, try again: ");
+
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "INSERT INTO HabitTable (Date, NumOfPushups) VALUES('" + userInput[0]+"','"+userInput[1]+"'); ";
+        sqlite_cmd.CommandText = "INSERT INTO HabitTable (Date, NumOfPushups) VALUES('" + userInputDate+"','"+userInputQuantity+"'); ";
         sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
@@ -132,12 +128,20 @@ class HabitProgram
     }
     public static void UpdateRecord(SQLiteConnection conn) 
     {
-        /*Console.WriteLine("Which entry would you like to update?");
-        int idNum =Convert.ToInt32(Console.ReadLine());
+        int idNum;
+        string userInputDate;
+        int userInputQuantity;
+        Console.WriteLine("Which entry would you like to update?");
+        idNum =Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Inserd date");
+        userInputDate = Console.ReadLine();
+        Console.WriteLine("Insert number of pushups");
+        while (!int.TryParse(Console.ReadLine(), out userInputQuantity))
+            Console.Write("The value must be of integer type, try again: ");
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "";
-        */
+        sqlite_cmd.CommandText = "UPDATE members SET Date ='"+userInputDate+"', NumOfPushups = '"+userInputQuantity+"' WHERE ID = '"+idNum+"'";
+        sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
 }
