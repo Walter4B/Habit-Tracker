@@ -112,7 +112,7 @@ class HabitProgram
 
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "INSERT INTO HabitTable (Date, NumOfPushups) VALUES('" + userInputDate+"','"+userInputQuantity+"'); ";
+        sqlite_cmd.CommandText = $"INSERT INTO HabitTable (Date, NumOfPushups) VALUES('{userInputDate}','{userInputQuantity}');";
         sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
@@ -122,7 +122,7 @@ class HabitProgram
         int idNum = Convert.ToInt32(Console.ReadLine());
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "DELETE FROM HabitTable WHERE ID = "+idNum+";";
+        sqlite_cmd.CommandText = $"DELETE FROM HabitTable WHERE ID = '{idNum}';";
         sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
@@ -140,7 +140,7 @@ class HabitProgram
             Console.Write("The value must be of integer type, try again: ");
         SQLiteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "UPDATE HabitTable SET Date ='"+userInputDate+"', NumOfPushups = '"+userInputQuantity+"' WHERE ID = '"+idNum+"'";
+        sqlite_cmd.CommandText = $"UPDATE HabitTable SET Date ='{userInputDate}', NumOfPushups = '{userInputQuantity}' WHERE ID = '{idNum}'";
         sqlite_cmd.ExecuteNonQuery();
         SwitchCommand(conn);
     }
