@@ -7,16 +7,7 @@ class HabitProgram
     public static string connectionString = "Data Source = database.db; Version = 3; New = True; Compress = True; ";
     public static void Main()
     {
-        try
-        {
-            CreateTable();
-            Console.WriteLine("Created new table");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Using existing table");
-        }
-        
+        CreateTable();
         SwitchCommand();
     }
     static void CreateTable()
@@ -26,7 +17,7 @@ class HabitProgram
             using (SQLiteCommand command = connection.CreateCommand())
             {
                 connection.Open();
-                string Createsql = "CREATE TABLE HabitTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, NumOfPushups INT NOT NULL)";
+                string Createsql = @"CREATE TABLE IF NOT EXISTS HabitTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, NumOfPushups INT NOT NULL)";
                 command.CommandText = Createsql;
                 command.ExecuteNonQuery();
                 connection.Close();
