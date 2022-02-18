@@ -4,44 +4,36 @@ using System.Text;
 using System.Data.SQLite;
 class HabitProgram
 {
+    public static string connectionString = "Data Source = database.db; Version = 3; New = True; Compress = True; ";
     public static void Main()
     {
-        SQLiteConnection sqlite_conn;
-        sqlite_conn = CreateConnection();
         try
         {
-            CreateTable(sqlite_conn);
-        }
-        catch (Exception ex)
-        { }
-        SwitchCommand(sqlite_conn);
-    }
-
-    static SQLiteConnection CreateConnection()
-    {
-
-        SQLiteConnection sqlite_conn;
-        sqlite_conn = new SQLiteConnection("Data Source = database.db; Version = 3; New = True; Compress = True; ");
-        try
-        {
-            sqlite_conn.Open();
+            CreateTable();
+            Console.WriteLine("Created new table");
         }
         catch (Exception ex)
         {
-
+            Console.WriteLine("Using existing table");
         }
-        return sqlite_conn;
+        
+        SwitchCommand();
     }
-
-    static void CreateTable(SQLiteConnection conn)
+    static void CreateTable()
     {
-        SQLiteCommand sqlite_cmd;
-        string Createsql = "CREATE TABLE HabitTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, NumOfPushups INT NOT NULL)";
-         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = Createsql;
-        sqlite_cmd.ExecuteNonQuery();
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                string Createsql = "CREATE TABLE HabitTable (ID INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT NOT NULL, NumOfPushups INT NOT NULL)";
+                command.CommandText = Createsql;
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
-    public static void SwitchCommand(SQLiteConnection conn)
+    public static void SwitchCommand()
     {
         Console.WriteLine("\n       MAIN MENU       \n\n" +
             "What would you like to do?\n" +
@@ -62,87 +54,130 @@ class HabitProgram
                     Environment.Exit(1);
                     break;
                 case 1:
-                    ViewRecords(conn);
+                    ViewRecords();
                     break;
                 case 2:
-                    InsertRecord(conn);
+                    InsertRecord();
                     break;
                 case 3:
-                    DeleteRecord(conn);
+                    DeleteRecord();
                     break;
                 case 4:
-                    UpdateRecord(conn);
+                    UpdateRecord();
                     break;
                 default:
                     Console.WriteLine("Invalid input");
-                    SwitchCommand(conn);
+                    SwitchCommand();
                     break;
             }
         }
-        else 
+        else
         {
             Console.WriteLine("Invalid input");
-            SwitchCommand(conn);
+            SwitchCommand();
         }
     }
-
-    static void ViewRecords(SQLiteConnection conn)
+    static void ViewRecords()
     {
-        SQLiteDataReader sqlite_datareader;
-        SQLiteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "SELECT * FROM HabitTable";
-
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
-        while (sqlite_datareader.Read())
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
-            Console.WriteLine($"{sqlite_datareader.GetInt32(0)} - {sqlite_datareader.GetString(1)} - {sqlite_datareader.GetInt32(2)}");
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                command.CommandText = "SELECT * FROM HabitTable";
+                using (SQLiteDataReader sqlDataReader = command.ExecuteReader())
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        Console.WriteLine($"{sqlDataReader.GetInt32(0)} - {sqlDataReader.GetString(1)} - {sqlDataReader.GetInt32(2)}");
+                    }
+                }
+                connection.Close();
+            }
         }
-        SwitchCommand(conn);
-        conn.Close();
+        SwitchCommand();
     }
-    public static void InsertRecord(SQLiteConnection conn) 
+    public static void InsertRecord()
     {
-        Console.WriteLine("Inserd date");
-        string userInputDate = Console.ReadLine();
+        string userInputDate;
+        do {
+            Console.WriteLine("Inserd date");
+            userInputDate = Console.ReadLine();
+        } while (IsNullOrEmpty(userInputDate));
         Console.WriteLine("Insert number of pushups");
-        int userInputQuantity;
-        while (!int.TryParse(Console.ReadLine(), out userInputQuantity))
-            Console.Write("The value must be of integer type, try again: ");
-
-        SQLiteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = $"INSERT INTO HabitTable (Date, NumOfPushups) VALUES('{userInputDate}','{userInputQuantity}');";
-        sqlite_cmd.ExecuteNonQuery();
-        SwitchCommand(conn);
+        int userInputQuantity = UserNumberInput();
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                command.CommandText = $"INSERT INTO HabitTable (Date, NumOfPushups) VALUES('{userInputDate}','{userInputQuantity}');";
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+        SwitchCommand();
     }
-    public static void DeleteRecord(SQLiteConnection conn) 
+    public static void DeleteRecord()
     {
+        int idNum;
         Console.WriteLine("Which entry would you like to remove?");
-        int idNum = Convert.ToInt32(Console.ReadLine());
-        SQLiteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = $"DELETE FROM HabitTable WHERE ID = '{idNum}';";
-        sqlite_cmd.ExecuteNonQuery();
-        SwitchCommand(conn);
+        idNum = UserNumberInput();
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                command.CommandText = $"DELETE FROM HabitTable WHERE ID = '{idNum}';";
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+        SwitchCommand();
     }
-    public static void UpdateRecord(SQLiteConnection conn) 
+    public static void UpdateRecord()
     {
         int idNum;
         string userInputDate;
         int userInputQuantity;
         Console.WriteLine("Which entry would you like to update?");
-        idNum =Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Inserd date");
-        userInputDate = Console.ReadLine();
+        idNum = UserNumberInput();
+        do
+        {
+            Console.WriteLine("Insert date");
+            userInputDate = Console.ReadLine();
+        } while (IsNullOrEmpty(userInputDate));
         Console.WriteLine("Insert number of pushups");
         while (!int.TryParse(Console.ReadLine(), out userInputQuantity))
             Console.Write("The value must be of integer type, try again: ");
-        SQLiteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = $"UPDATE HabitTable SET Date ='{userInputDate}', NumOfPushups = '{userInputQuantity}' WHERE ID = '{idNum}'";
-        sqlite_cmd.ExecuteNonQuery();
-        SwitchCommand(conn);
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            using (SQLiteCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                command.CommandText = $"UPDATE HabitTable SET Date ='{userInputDate}', NumOfPushups = '{userInputQuantity}' WHERE ID = '{idNum}'";
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+        SwitchCommand();
+    }
+    public static bool IsNullOrEmpty<T>(T value)
+    {
+        string convertedString = Convert.ToString(value);
+        bool result;
+        result = convertedString == null || convertedString == string.Empty;
+        if (result == false)
+        { }
+        Console.WriteLine();
+        return result;
+    }
+    public static int UserNumberInput()
+    {
+        int userInupt;
+        while (!int.TryParse(Console.ReadLine(), out userInupt))
+            Console.Write("The value must be of integer type, try again: ");
+        return userInupt;
     }
 }
 
