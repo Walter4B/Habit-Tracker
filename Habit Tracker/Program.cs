@@ -95,8 +95,7 @@ class HabitProgram
             Console.WriteLine("Inserd date");
             userInputDate = Console.ReadLine();
         } while (IsNullOrEmpty(userInputDate));
-        Console.WriteLine("Insert number of pushups");
-        int userInputQuantity = UserNumberInput();
+        int userInputQuantity = UserNumberInput("Insert number of pushups");
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
             using (SQLiteCommand command = connection.CreateCommand())
@@ -112,8 +111,7 @@ class HabitProgram
     public static void DeleteRecord()
     {
         int idNum;
-        Console.WriteLine("Which entry would you like to remove?");
-        idNum = UserNumberInput();
+        idNum = UserNumberInput("Which entry would you like to remove?");
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
             using (SQLiteCommand command = connection.CreateCommand())
@@ -128,19 +126,15 @@ class HabitProgram
     }
     public static void UpdateRecord()
     {
-        int idNum;
         string userInputDate;
         int userInputQuantity;
-        Console.WriteLine("Which entry would you like to update?");
-        idNum = UserNumberInput();
+        int idNum = UserNumberInput("Which entry would you like to update?");
         do
         {
             Console.WriteLine("Insert date");
             userInputDate = Console.ReadLine();
         } while (IsNullOrEmpty(userInputDate));
-        Console.WriteLine("Insert number of pushups");
-        while (!int.TryParse(Console.ReadLine(), out userInputQuantity))
-            Console.Write("The value must be of integer type, try again: ");
+        userInputQuantity = UserNumberInput("Insert number of pushups");
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
             using (SQLiteCommand command = connection.CreateCommand())
@@ -163,12 +157,18 @@ class HabitProgram
         Console.WriteLine();
         return result;
     }
-    public static int UserNumberInput()
+    internal static int UserNumberInput(string message)
     {
-        int userInupt;
-        while (!int.TryParse(Console.ReadLine(), out userInupt))
-            Console.Write("The value must be of integer type, try again: ");
-        return userInupt;
+        Console.WriteLine(message);
+        string userInupt = Console.ReadLine();
+
+        while (!Int32.TryParse(userInupt, out _) || Convert.ToInt32(userInupt) < 0)
+        {
+            Console.Write("The value must be of positive integer type, try again: ");
+            userInupt = Console.ReadLine();
+        }
+
+        return Convert.ToInt32(userInupt);
     }
 }
 
