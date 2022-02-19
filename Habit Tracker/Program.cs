@@ -2,14 +2,18 @@
 using System.IO;
 using System.Text;
 using System.Data.SQLite;
+using System.Globalization;
+
 class HabitProgram
 {
     public static string connectionString = "Data Source = database.db; Version = 3; New = True; Compress = True; ";
+
     public static void Main()
     {
         CreateTable();
         SwitchCommand();
     }
+
     static void CreateTable()
     {
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -24,6 +28,7 @@ class HabitProgram
             }
         }
     }
+
     public static void SwitchCommand()
     {
         Console.WriteLine("\n       MAIN MENU       \n\n" +
@@ -68,6 +73,7 @@ class HabitProgram
             SwitchCommand();
         }
     }
+
     static void ViewRecords()
     {
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -88,13 +94,11 @@ class HabitProgram
         }
         SwitchCommand();
     }
+
     public static void InsertRecord()
     {
         string userInputDate;
-        do {
-            Console.WriteLine("Inserd date");
-            userInputDate = Console.ReadLine();
-        } while (IsNullOrEmpty(userInputDate));
+        userInputDate = DateInput();
         int userInputQuantity = UserNumberInput("Insert number of pushups");
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
@@ -108,6 +112,7 @@ class HabitProgram
         }
         SwitchCommand();
     }
+
     public static void DeleteRecord()
     {
         int idNum;
@@ -124,17 +129,13 @@ class HabitProgram
         }
         SwitchCommand();
     }
+
     public static void UpdateRecord()
     {
         string userInputDate;
-        int userInputQuantity;
         int idNum = UserNumberInput("Which entry would you like to update?");
-        do
-        {
-            Console.WriteLine("Insert date");
-            userInputDate = Console.ReadLine();
-        } while (IsNullOrEmpty(userInputDate));
-        userInputQuantity = UserNumberInput("Insert number of pushups");
+        userInputDate = DateInput();
+        int userInputQuantity = UserNumberInput("Insert number of pushups");
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
             using (SQLiteCommand command = connection.CreateCommand())
@@ -147,16 +148,7 @@ class HabitProgram
         }
         SwitchCommand();
     }
-    public static bool IsNullOrEmpty<T>(T value)
-    {
-        string convertedString = Convert.ToString(value);
-        bool result;
-        result = convertedString == null || convertedString == string.Empty;
-        if (result == false)
-        { }
-        Console.WriteLine();
-        return result;
-    }
+
     internal static int UserNumberInput(string message)
     {
         Console.WriteLine(message);
@@ -169,6 +161,21 @@ class HabitProgram
         }
 
         return Convert.ToInt32(userInupt);
+    }
+
+    internal static string DateInput()
+    {
+        Console.WriteLine("Insert date: (format dd-mm-yyyy)\n");
+
+        string dateInput = Console.ReadLine();
+
+        while (!DateTime.TryParseExact(dateInput, "dd-mm-yyyy", new CultureInfo("en-GB"), DateTimeStyles.None, out _))
+        {
+            Console.WriteLine("\n Invalid date. (format dd-mm-yyyy) Try again: \n");
+            dateInput = Console.ReadLine();
+        }
+
+        return dateInput;
     }
 }
 
