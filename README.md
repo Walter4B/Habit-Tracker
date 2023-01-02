@@ -28,7 +28,7 @@ Application is meant for keeping track of pushups done every day
 - CRUD db functions 
   - In the main menu user can create, read, update and delete entries
   - Date is parsed to check if it's valid.
-  - ![CRUD](Images/CRUD.png)
+  - ![CRUD](Images/Input.png)
 
 -Reporting is done with IDs so user can use the app as intended
 
