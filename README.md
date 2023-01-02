@@ -23,12 +23,12 @@ Application is meant for keeping track of pushups done every day
   - If database or table do not exist they will be crated on startup.
 
 - Console main menu
-  - ![MainMenu](Images/MainMenu.png)
+  - ![MainMenu](Images/MainMenu.PNG)
 
 - CRUD db functions 
   - In the main menu user can create, read, update and delete entries
   - Date is parsed to check if it's valid.
-  - ![CRUD](Images/Input.png)
+  - ![CRUD](Images/Input.PNG)
 
 -Reporting is done with IDs so user can use the app as intended
 
