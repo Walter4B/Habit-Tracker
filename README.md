@@ -1,8 +1,8 @@
 # Habit-Tracker
 
-First console application in a series for learining .net.
+First console application in a series for learning .net. 
 
-Application is ment for keeping track of pushaps done every day
+Application is meant for keeping track of pushups done every day
 
 ## Requirements: 
  - [x] Application has to be written in one cs file.
@@ -17,8 +17,10 @@ Application is ment for keeping track of pushaps done every day
  - [x] The application should only be terminated when the user inserts 0.
  - [x] You can only interact with the database using raw SQL. You can’t use mappers such as Entity Framework.
 
-## Used:
+## Tech stack:
 - Sqlite database 
-- CRUD commands have raw SQL
+- Sqlite data reader
+- SQL
+- .net 6.0
 
 Special thanks to [Cappuccinocodes](https://github.com/cappuccinocodes) for help and advice.
