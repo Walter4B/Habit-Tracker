@@ -1,6 +1,7 @@
 # Habit-Tracker
 
-First console application in a series for learining .net 
+First console application in a series for learining .net.
+
 Application is ment for keeping track of pushaps done every day
 
 ## Requirements: 
