@@ -30,7 +30,7 @@ Application is meant for keeping track of pushups done every day
   - Date is parsed to check if it's valid.
   - ![CRUD](Images/Input.PNG)
 
--Reporting is done with IDs so user can use the app as intended
+- Reporting is done with IDs so user can use the app as intended
   - ![CRUD](Images/Report.PNG)
 
 Reporting is done 
