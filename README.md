@@ -31,6 +31,7 @@ Application is meant for keeping track of pushups done every day
   - ![CRUD](Images/Input.PNG)
 
 -Reporting is done with IDs so user can use the app as intended
+  - ![CRUD](Images/Report.PNG)
 
 Reporting is done 
 ## Tech stack:
