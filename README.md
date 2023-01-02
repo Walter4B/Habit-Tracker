@@ -1,8 +1,10 @@
 # Habit-Tracker
 
-Console application for keeping track of pushaps done every day
+First console application in a series for learining .net 
+Application is ment for keeping track of pushaps done every day
 
 ## Requirements: 
+ - [x] Application has to be written in one cs file.
  - [x] This is an application where you’ll register one habit.
  - [x] This habit can't be tracked by time (ex. hours of sleep), only by quantity (ex. number of water glasses a day)
  - [x] The application should store and retrieve data from a real database
@@ -17,7 +19,5 @@ Console application for keeping track of pushaps done every day
 ## Used:
 - Sqlite database 
 - CRUD commands have raw SQL
-
-As per requiarment application is writen in a single cs file.
 
 Special thanks to [Cappuccinocodes](https://github.com/cappuccinocodes) for help and advice.
